@@ -35,7 +35,7 @@ export const posts = mysqlTable(
   (example) => ({
     createdByIdIdx: index("createdById_idx").on(example.createdById),
     nameIndex: index("name_idx").on(example.name),
-  })
+  }),
 );
 
 export const users = mysqlTable("user", {
@@ -49,9 +49,52 @@ export const users = mysqlTable("user", {
   image: varchar("image", { length: 255 }),
 });
 
+export const followers = mysqlTable(
+  "follower",
+  {
+    followerId: varchar("follower_id", { length: 255 }).notNull(),
+    followedId: varchar("followed_id", { length: 255 }).notNull(),
+  },
+  (table) => ({
+    id: primaryKey(table.followerId, table.followedId),
+  }),
+);
+
 export const usersRelations = relations(users, ({ many }) => ({
   accounts: many(accounts),
+  tweets: many(tweets),
 }));
+
+export const tweets = mysqlTable(
+  "tweet",
+  {
+    id: varchar("id", { length: 255 }).notNull().primaryKey(),
+    content: varchar("content", { length: 500 }).notNull(),
+    userId: varchar("userId", { length: 255 }).notNull(),
+    createdAt: timestamp("created_at")
+      .default(sql`CURRENT_TIMESTAMP`)
+      .notNull(),
+  },
+  (tweet) => ({
+    userIdx: index("userId_idx").on(tweet.userId),
+  }),
+);
+
+export const tweetsRelations = relations(tweets, ({ many }) => ({
+  likes: many(likes),
+}));
+
+export const likes = mysqlTable(
+  "like",
+  {
+    // id: varchar("id", { length: 255 }).notNull().primaryKey(),
+    userId: varchar("userId", { length: 255 }).notNull(),
+    tweetId: varchar("tweetId", { length: 255 }).notNull(),
+  },
+  (like) => ({
+    id: primaryKey(like.userId, like.tweetId),
+  }),
+);
 
 export const accounts = mysqlTable(
   "account",
