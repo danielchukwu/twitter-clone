@@ -1,4 +1,5 @@
-import { relations, sql } from "drizzle-orm";
+import { timeStamp } from "console";
+import { like, relations, sql } from "drizzle-orm";
 import {
   bigint,
   index,
@@ -7,6 +8,7 @@ import {
   primaryKey,
   text,
   timestamp,
+  unique,
   varchar,
 } from "drizzle-orm/mysql-core";
 import { type AdapterAccount } from "next-auth/adapters";
