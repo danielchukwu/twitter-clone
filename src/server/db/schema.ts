@@ -19,7 +19,7 @@ import { type AdapterAccount } from "next-auth/adapters";
  *
  * @see https://orm.drizzle.team/docs/goodies#multi-project-schema
  */
-export const mysqlTable = mysqlTableCreator((name) => `twitter_clone${name}`);
+export const mysqlTable = mysqlTableCreator((name) => `twitter_clone_${name}`);
 
 export const posts = mysqlTable(
   "post",
